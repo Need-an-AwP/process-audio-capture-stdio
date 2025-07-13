@@ -4,7 +4,7 @@
 ## 简介
 本应用通过一个 C++ 子进程实时捕获指定 Windows 进程的音频输出，并使用 Electron 和 React 构建的用户界面进行实时频谱可视化。进程间通信采用 `stdio` 标准流，以确保高效的数据传输和较低的性能损耗。
 
-本项目旨在提供一个现代化的替代方案，取代以下项目：
+本项目旨替代以下项目：
 - [Capture-Audio-from-Process---javascript-addon](https://github.com/Need-an-AwP/Capture-Audio-from-Process---javascript-addon)
 - [win-process-audio-capture](https://github.com/Need-an-AwP/win-process-audio-capture)
 
@@ -13,6 +13,8 @@
 - **实时音频捕获**：从选定的进程中捕获原始 PCM 音频流。
 - **频谱可视化**：使用 Web Audio API 和 Canvas 实时显示音频频谱图。
 - **高性能**：通过优化的 C++ 后端和高效的 `stdio` 通信，最大限度地减少延迟和性能开销。
+
+<img width="1176" height="598" alt="image" src="https://github.com/user-attachments/assets/024ee454-d2e0-465b-bade-1e36b968d606" />
 
 ## 技术栈
 - **前端**: React, TypeScript, Vite, shadcn/ui, Tailwind CSS
@@ -57,7 +59,7 @@ An application for capturing and visualizing audio output from specific Windows 
 ## Introduction
 This application captures the audio output of a specified Windows process in real-time using a C++ subprocess and provides a user interface built with Electron and React for live spectrum visualization. Communication between processes is handled via `stdio` to ensure efficient data transfer and low performance overhead.
 
-This project aims to be a modern alternative to:
+This project aims to be a alternative to:
 - [Capture-Audio-from-Process---javascript-addon](https://github.com/Need-an-AwP/Capture-Audio-from-Process---javascript-addon)
 - [win-process-audio-capture](https://github.com/Need-an-AwP/win-process-audio-capture)
 
