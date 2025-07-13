@@ -1,23 +1,33 @@
-const { app, shell, BrowserWindow, ipcMain, desktopCapturer, session } = require('electron')
-const path = require('path')
+import { app, shell, BrowserWindow, ipcMain } from 'electron'
+import path, { join } from 'path'
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+
+const captureProcessEXE = path.join(__dirname, '../process-audio-capture/x64/Debug/process-audio-capture.exe');
+import { startCaptureProcessAudio } from './captureProcess.mjs';
+
 
 const isDev = process.env.DEV != undefined;
 let mainWindow;
 
 function createWindow() {
     mainWindow = new BrowserWindow({
-        width: 1286,
-        height: 844 + 32,
+        width: 400,
+        height: 600,
         autoHideMenuBar: true,
         frame: true,
         webPreferences: {
-            preload: path.join(__dirname, 'preload.cjs'),
+            preload: path.join(__dirname, 'preload.mjs'),
             spellcheck: false,
             nodeIntegration: true,// for allowing preload js to use node api
             contextIsolation: true,
         }
     })
 
+    const quitCpaProcess = startCaptureProcessAudio(captureProcessEXE, mainWindow);
 
     ipcMain.on('minimize-window', () => {
         mainWindow.minimize();
@@ -38,6 +48,7 @@ function createWindow() {
     })
 
     mainWindow.on('closed', () => {
+        quitCpaProcess();
         if (process.platform !== 'darwin') {
             app.quit()
         }

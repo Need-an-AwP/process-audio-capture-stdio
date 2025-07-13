@@ -5,9 +5,9 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "main": "app/index.cjs",
+  "main": "app/index.mjs",
   "scripts": {
-    "dev": "concurrently -k \"vite\" \"cross-env DEV=true electron app/index.cjs\"",
+    "dev": "concurrently -k \"vite\" \"cross-env DEV=true electron app/index.mjs\"",
     "build:fe": "tsc -b && vite build",
     "build:win": "electron-builder --win",
     "build":"npm run build:fe && npm run build:win",

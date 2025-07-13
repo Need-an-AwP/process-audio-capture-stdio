@@ -1,4 +1,4 @@
-const { contextBridge, ipcRenderer, clipboard, desktopCapturer } = require('electron');
+import { contextBridge, ipcRenderer, clipboard } from 'electron';
 
 contextBridge.exposeInMainWorld('ipcBridge', {
     receive: (channel, callback) => {
@@ -32,4 +32,6 @@ contextBridge.exposeInMainWorld('ipcBridge', {
     minimizeWindow: () => ipcRenderer.send('minimize-window'),
     maximizeWindow: () => ipcRenderer.send('maximize-window'),
     closeWindow: () => ipcRenderer.send('close-window'),
+
+    getAudioSessions: () => ipcRenderer.send('get-audio-sessions'),
 });

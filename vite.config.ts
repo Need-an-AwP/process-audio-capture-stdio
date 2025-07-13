@@ -12,4 +12,13 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  server:{
+    watch: {
+      ignored: [
+        "**/app/**",
+        "**/.vscode/**",
+        "**/README.md",
+      ],
+    },
+  }
 })

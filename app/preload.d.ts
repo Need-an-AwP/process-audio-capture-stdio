@@ -7,6 +7,8 @@ export interface IpcBridge {
     minimizeWindow: () => void;
     maximizeWindow: () => void;
     closeWindow: () => void;
+
+    getAudioSessions: () => Promise<any>;
 }
 
 declare global {
