@@ -1,0 +1,34 @@
+name: Build and Release C++ Subprocess
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build-and-release:
+    runs-on: windows-latest
+
+    permissions:
+      contents: write
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up MSBuild
+      uses: microsoft/setup-msbuild@v2
+
+    - name: Set up NuGet
+      uses: NuGet/setup-nuget@v2
+
+    - name: Restore NuGet packages
+      run: nuget restore process-audio-capture/process-audio-capture.sln
+
+    - name: Build C++ subprocess
+      run: msbuild process-audio-capture/process-audio-capture.sln /p:Configuration=Release /p:Platform=x64
+
+    - name: Create Release and Upload Asset
+      uses: softprops/action-gh-release@v2
+      with:
+        files: process-audio-capture/x64/Release/process-audio-capture.exe 
