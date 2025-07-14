@@ -21,7 +21,6 @@ dist-ssr
 *.suo
 *.ntvs*
 *.njsproj
-*.sln
 *.sw?
 
 # Visual Studio 及其生成的文件
