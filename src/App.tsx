@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
+import { Switch } from '@/components/ui/switch'
+import { Label } from '@/components/ui/label'
 import { ThemeProvider } from '@/components/theme-provider'
 import './App.css'
 import UserAudioSpectrum from '@/components/UserAudioSpectrum'
@@ -12,15 +14,21 @@ function App() {
     const pcmPlayerNodeRef = useRef<AudioWorkletNode | null>(null);
     const audioRef = useRef<HTMLAudioElement | null>(null);
     const [analyser, setAnalyser] = useState<AnalyserNode | null>(null);
+    const [displaySpectrum, setDisplaySpectrum] = useState<boolean>(true);
 
     const initAudio = async (format: any) => {
         if (!audioContextRef.current) {
-            const context = new AudioContext({ sampleRate: format.sampleRate });
+            // const context = new AudioContext({ sampleRate: format.sampleRate });
+            const context = new AudioContext();
             audioContextRef.current = context;
             try {
                 await context.audioWorklet.addModule('audio-processor.js');
                 const playerNode = new AudioWorkletNode(context, 'pcm-player', {
-                    outputChannelCount: [format.channels]
+                    outputChannelCount: [format.channels],
+                    processorOptions: {
+                        sampleRate: format.sampleRate,
+                        channels: format.channels
+                    }
                 });
                 const destination = context.createMediaStreamDestination()
                 const analyserNode = context.createAnalyser()
@@ -120,23 +128,29 @@ function App() {
             <div className='w-screen h-screen p-4'>
                 <div className='w-full h-full flex flex-col justify-center items-center gap-4'>
                     <audio ref={audioRef} muted={true} controls={true} autoPlay={true} />
-                    <Select
-                        value={isCapturing}
-                        onValueChange={handleStartCapture}
-                    >
-                        <SelectTrigger>
-                            <SelectValue placeholder='Select a process' />
-                        </SelectTrigger>
-                        <SelectContent>
-                            {audioSessions.map((session) => (
-                                // pid is number, select value is string
-                                <SelectItem key={session.pid} value={session.pid.toString()}>
-                                    {session.processName}-{session.pid}
-                                </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
-                    {isCapturing.length > 0 && analyser && <>
+
+                    <div className='flex flex-row gap-2 items-center'>
+                        <Select
+                            value={isCapturing}
+                            onValueChange={handleStartCapture}
+                        >
+                            <SelectTrigger>
+                                <SelectValue placeholder='Select a process' />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {audioSessions.map((session) => (
+                                    // pid is number, select value is string
+                                    <SelectItem key={session.pid} value={session.pid.toString()}>
+                                        {session.processName}-{session.pid}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                        <Switch checked={displaySpectrum} onCheckedChange={setDisplaySpectrum} />
+                        <Label className='text-xs text-muted-foreground'>Display Spectrum</Label>
+                    </div>
+
+                    {isCapturing.length > 0 && analyser && displaySpectrum && <>
                         <Button onClick={handleStopCapture}>Stop Capture</Button>
                         <UserAudioSpectrum
                             displayStyle='bar'

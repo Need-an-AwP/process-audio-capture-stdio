@@ -35,12 +35,11 @@ class RingBuffer {
 }
 
 class PcmPlayer extends AudioWorkletProcessor {
-    constructor() {
+    constructor(options) {
         super();
-        // Create a ring buffer with a size that can hold a few seconds of audio data.
-        // Sample rate is known to be 44100, stereo. 
-        // Let's allocate for ~5 seconds of stereo audio.
-        this.ringBuffer = new RingBuffer(44100 * 2 * 5);
+        const { sampleRate = 48000, channels = 2 } = options.processorOptions || {};
+        // Create a ring buffer with a size that can hold ~5 seconds of audio data.
+        this.ringBuffer = new RingBuffer(sampleRate * channels * 5);
         this.port.onmessage = (e) => {
             if (e.data.type === 'pcm-data') {
                 // console.log(`[AudioWorklet] Received pcm-data, pushing ${e.data.pcm.length} samples to ring buffer.`);
