@@ -551,7 +551,7 @@ void input_thread_func() {
 int main()
 {
 	_setmode(_fileno(stdout), _O_BINARY);
-	std::cerr << "Hello World!\n";
+	//std::cerr << "Hello World!\n";
 
 
 	std::thread input_thread(input_thread_func);
